@@ -11,7 +11,6 @@ MapGrid::MapGrid(sf::RenderWindow& window) : _window(window)
 	for (int i = 0; i < height; i++)
 		for (int j = 0; j < width; j++)
 		{
-			//map[i].push_back(new Cell*[2]{ new Cell(Pass, sf::Vector2i(i * coef_x, j * coef_y)), new Cell(Pass, sf::Vector2i(i * coef_x, j * coef_y)) });
 			map[i].push_back(new Cell(sf::Vector2i(i * coef_x, j * coef_y)));
 		}
 	cellShape.setSize(sf::Vector2f((float)coef_x, (float)coef_y));
@@ -21,16 +20,7 @@ MapGrid::MapGrid(sf::RenderWindow& window) : _window(window)
 
 	markerTexture.display();
 
-	//addPoint(Hub, startPos);
-	//addPoint(Node, finishPos);
-
 	initWalls();
-
-	//addJoints(Hub, sf::Vector2f{ (float)_windowSize / 2.f, (float)_windowSize / 2.f });
-
-	/*markerShape.setFillColor(sf::Color(255, 0, 0));
-	markerShape.setPosition(322, 322);
-	markerTexture.draw(markerShape, sf::BlendNone);*/
 }
 
 MapGrid::~MapGrid()
@@ -49,24 +39,23 @@ void MapGrid::update(float dt)
 	for (int i = 0; i < height; i++)
 		for (int j = 0; j < width; j++)
 		{
-			//map[i][j]->decreaseIntensity(dt);
 			if (!map[i][j]->decreaseIntensity(dt))
 				updateTexture(Pass, map[i][j]->getPos());
 		}
 	//map[80][80]->debugParams();
 
+	// Left Mouse Click
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
 		sf::Vector2i mouse_pos = sf::Mouse::getPosition(_window);
 		addWalls(mouse_pos);
-		// left click...
 	}
 	
+	// Right Mouse Click
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
 	{
 		sf::Vector2i mouse_pos = sf::Mouse::getPosition(_window);
 		addPass(mouse_pos);
-		// right click...
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::H) && !hub_exists)
@@ -86,10 +75,8 @@ void MapGrid::update(float dt)
 
 void MapGrid::render()
 {
-	renderMarker();
-
-	//for (int i = 0; i < jointShapes.size(); i++)
-		//_window.draw(*jointShapes[i]);
+	markerTexture.display();
+	_window.draw(sf::Sprite(markerTexture.getTexture()));
 }
 
 void MapGrid::updateTexture(CellType type, sf::Vector2i pos)
@@ -118,15 +105,8 @@ void MapGrid::updateTexture(CellType type, sf::Vector2i pos)
 		cellShape.setFillColor(C_PASS);
 		break;
 	}
-	//cellShape.setPosition((float)pos.x + 2.f, (float)pos.y + 2.f);
 	cellShape.setPosition((float)pos.x, (float)pos.y);
 	markerTexture.draw(cellShape, sf::BlendAlpha);
-}
-
-void MapGrid::renderMarker()
-{
-	markerTexture.display();
-	_window.draw(sf::Sprite(markerTexture.getTexture()));
 }
 
 void MapGrid::addMarker(sf::Vector2f pos, CellType phase, float relevance)
@@ -179,11 +159,6 @@ short MapGrid::isWall(sf::Vector2f cur_pos, sf::Vector2f check_pos)
 	}
 
 	return ret;
-
-	/*if (map[x][y]->getType() == Wall)
-		return true;
-	else
-		return false;*/
 }
 
 int MapGrid::dirByMarkers(sf::Vector2f pos, CellType phase)
@@ -197,8 +172,6 @@ int MapGrid::dirByMarkers(sf::Vector2f pos, CellType phase)
 	{
 		for (int j = -1; j <= 1; j++)
 		{
-			/*if (phase == ToHub)
-				std::cout << map[x + j][y + i]->getIntensity(phase) << " ";*/
 			if (map[x + j][y + i]->getIntensity(phase) > maxIntensity && map[x + j][y + i]->getIntensity(phase) != 0.f)
 			{
 				maxIntensity = map[x + j][y + i]->getIntensity(phase);
@@ -211,16 +184,8 @@ int MapGrid::dirByMarkers(sf::Vector2f pos, CellType phase)
 			}
 			k++;
 		}
-		/*if (phase == ToHub)
-			std::cout << '\n';*/
 	}
-	/*if (phase == ToHub)
-		std::cout << '\n';*/
-	/*markerShape.setFillColor(sf::Color(0, 0, 255));
-	markerShape.setPosition(kx * coef_x + 2, ky * coef_y + 2);
-	markerTexture.draw(markerShape, sf::BlendNone);*/
-	//if ((intenseDir == -135 || intenseDir == -90) && phase == ToHub)
-	//	std::cout << map[kx][ky]->getIntensity(phase) << " " << map[kx + 1][ky - 2]->getIntensity(phase) << '\n';
+
 	return intenseDir;
 }
 
@@ -237,13 +202,6 @@ void MapGrid::addPoint(CellType t, sf::Vector2f pos)
 
 	if (t == Hub)
 		startPos = sf::Vector2f(x * coef_x, y * coef_y);
-
-	/*pointShapes.push_back(new sf::CircleShape);
-
-	pointShapes[pointShapes.size() - 1]->setRadius(10.f);
-	pointShapes[pointShapes.size() - 1]->setFillColor(sf::Color(51, 51, 51));
-	pointShapes[pointShapes.size() - 1]->setPosition(x * coef_x + 10.f, y * coef_y + 10.f);
-	*/
 }
 
 void MapGrid::initWalls()

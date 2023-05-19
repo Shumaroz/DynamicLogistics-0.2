@@ -23,9 +23,6 @@ private:
 	sf::RectangleShape cellShape;
 	sf::RenderTexture markerTexture;
 
-	//std::vector <sf::CircleShape*> pointShapes;
-	//std::vector<sf::RectangleShape*> markerShapeVec;
-
 	int _windowSize, coef_x, coef_y;
 
 public:
@@ -36,7 +33,6 @@ public:
 	void update(float dt);
 	void render();
 	void updateTexture(CellType type, sf::Vector2i pos);
-	void renderMarker();
 
 	void addMarker(sf::Vector2f pos, CellType phase, float relevance);
 	bool isDestination(sf::Vector2f pos, CellType phase);

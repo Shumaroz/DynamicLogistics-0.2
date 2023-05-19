@@ -35,31 +35,24 @@ void Agent::toDefault()
 
 void Agent::update(float dt, MapGrid& mapGrid)
 {
-	//if (cooldown > 0.f)
-	//	cooldown -= dt;
-	//else
-	//{
 	if (startPosition == sf::Vector2f{ 0.f, 0.f })
 	{
 		startPosition = mapGrid.getStartPos();
 		position = startPosition;
 	}
 
-		int markersDirection = mapGrid.dirByMarkers(position, phase);
-		if (markersDirection != -1 && (rand() % 100) < 90)
-		{
-			//cooldown = 0.5f;
+	int markersDirection = mapGrid.dirByMarkers(position, phase);
+	if (markersDirection != -1 && (rand() % 100) < 90)
+	{
 			desiredDirection.x += (float)cos(markersDirection * PI / 180);
 			desiredDirection.y += (float)sin(markersDirection * PI / 180);
-			//std::cout << markersDirection.x << " " << markersDirection.y << '\n';
-		}
-		else
-		{
-			desiredDirection.x += (float)cos(rand() % 360 * PI / 180) * wanderStrength;
-			desiredDirection.y += (float)sin(rand() % 360 * PI / 180) * wanderStrength;
-		}
-		desiredDirection = mapGrid.normalize(desiredDirection);
-	//}
+	}
+	else
+	{
+		desiredDirection.x += (float)cos(rand() % 360 * PI / 180) * wanderStrength;
+		desiredDirection.y += (float)sin(rand() % 360 * PI / 180) * wanderStrength;
+	}
+	desiredDirection = mapGrid.normalize(desiredDirection);
 
 	sf::Vector2f desiredVelocity = moveSpeed * desiredDirection;
 	sf::Vector2f desiredSteeringForce = (desiredVelocity - velocity) * steerStrength;
