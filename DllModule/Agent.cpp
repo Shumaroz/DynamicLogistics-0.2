@@ -1,55 +1,58 @@
+#include "pch.h"
 #include <SFML/Graphics.hpp>
-#include "Unit.h"
+#include "Agent.h"
 
 #include <iostream>
 
 #define PI 3.14159265
 
-Unit::Unit(sf::RenderWindow& window) : _window(window)
+Agent::Agent(sf::RenderWindow& window) : _window(window)
 {
 	_windowSize = _window.getSize().x;
-	this->unitShape.setRadius(4.f);
-	this->position = sf::Vector2f{ 0.f, 0.f };
-	this->startPosition = sf::Vector2f{ 0.f, 0.f };
-	this->unitShape.setFillColor(C_UNIT);
-	this->unitShape.setPosition(position);
-	this->unitShape.setOutlineThickness(2.f);
-	this->unitShape.setOutlineColor(sf::Color(0, 0, 0));
+	this->agentShape.setRadius(2.f);
+	startPosition = sf::Vector2f{ 0.f, 0.f };
+	this->position = startPosition;
+	this->agentShape.setFillColor(C_HUB);
+	this->agentShape.setPosition(position);
 
 	phase = ToNode;
-	active = false;
-	returning = false;
 }
 
-Unit::~Unit()
+Agent::~Agent() 
 {
 	delete this;
 }
 
-void Unit::toDefault()
+void Agent::toDefault()
 {
-	active = false;
-	returning = true;
 	this->position = startPosition;
-	this->unitShape.setPosition(position);
+	this->agentShape.setFillColor(C_HUB);
+	this->agentShape.setPosition(position);
 
 	this->velocity = sf::Vector2f{ 0.f, 0.f };
 	this->desiredDirection = sf::Vector2f{ 0.f, 0.f };
 	this->phase = ToNode;
 }
 
-void Unit::update(float dt, MapGrid& mapGrid)
+void Agent::update(float dt, MapGrid& mapGrid)
 {
-	if (startPosition == sf::Vector2f(0.f, 0.f))
+	if (startPosition == sf::Vector2f{ 0.f, 0.f })
 	{
 		startPosition = mapGrid.getStartPos();
 		position = startPosition;
 	}
-	if (!active)
-		active = true;
+
 	int markersDirection = mapGrid.dirByMarkers(position, phase);
-	desiredDirection.x += (float)cos(markersDirection * PI / 180);
-	desiredDirection.y += (float)sin(markersDirection * PI / 180);
+	if (markersDirection != -1 && (rand() % 100) < 90)
+	{
+			desiredDirection.x += (float)cos(markersDirection * PI / 180);
+			desiredDirection.y += (float)sin(markersDirection * PI / 180);
+	}
+	else
+	{
+		desiredDirection.x += (float)cos(rand() % 360 * PI / 180) * wanderStrength;
+		desiredDirection.y += (float)sin(rand() % 360 * PI / 180) * wanderStrength;
+	}
 	desiredDirection = mapGrid.normalize(desiredDirection);
 
 	sf::Vector2f desiredVelocity = moveSpeed * desiredDirection;
@@ -60,14 +63,6 @@ void Unit::update(float dt, MapGrid& mapGrid)
 	sf::Vector2f check_pos = position + dt * velocity;
 	// isWall: 0 - not wall, 1 - x hit, 2 - y hit
 	short wallPos = mapGrid.isWall(position, check_pos);
-	if (wallPos != 0 && !returning)
-	{
-		if (phase == ToNode)
-			phase = ToHub;
-		else
-			phase = ToNode;
-		returning = true;
-	}
 	while (wallPos != 0)
 	{
 		if (wallPos == 1 || wallPos == 3)
@@ -90,32 +85,37 @@ void Unit::update(float dt, MapGrid& mapGrid)
 	}
 
 	position += dt * velocity;
-	unitShape.setPosition(position);
+	agentShape.setPosition(position);
 
 	if (mapGrid.isDestination(position, phase))
 	{
-		if (returning)
+		relevanceTime = 50.f;
+		velocity = -velocity;
+		if (phase == ToNode)
 		{
-			active = false;
-			returning = false;
+			phase = ToHub;
+			this->agentShape.setFillColor(C_NODE);
 		}
 		else
 		{
-			velocity = -velocity;
-			if (phase == ToNode)
-				phase = ToHub;
-			else
-				phase = ToNode;
+			phase = ToNode;
+			this->agentShape.setFillColor(C_HUB);
 		}
 	}
+
+	mapGrid.addMarker(position, phase, relevanceTime);
+	if (relevanceTime > 0)
+		relevanceTime -= 2*dt;
+	else
+		relevanceTime = 0;
 }
 
-void Unit::render()
+void Agent::render()
 {
-	_window.draw(unitShape);
+	_window.draw(agentShape);
 }
 
-bool Unit::isActive()
+sf::Vector2f Agent::getPos()
 {
-	return active;
+	return position;
 }

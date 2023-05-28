@@ -1,14 +1,16 @@
 #pragma once
 
-/*#ifndef MAPGRID_H
-#define MAPGRID_H*/
+#ifndef MAPGRID_H
+#define MAPGRID_H
+#include "MyDLL.h"
+
 #include <SFML/Graphics.hpp>
 #include "framework.h"
 #include <vector>
 #include "Cell.h"
 #include "CellTypes.h"
 
-class MapGrid
+class MYDLL_API MapGrid
 {
 private:
 	const int pass = 0, marker = 1;
@@ -49,3 +51,5 @@ public:
 
 	sf::Vector2f normalize(const sf::Vector2f& source);
 };
+
+#endif

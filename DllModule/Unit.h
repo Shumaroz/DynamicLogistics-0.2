@@ -1,13 +1,15 @@
 #pragma once
 
-/*#ifndef UNIT_H
-#define UNIT_H*/
+#ifndef UNIT_H
+#define UNIT_H
+#include "MyDLL.h"
+
 #include <SFML/Graphics.hpp>
 #include "framework.h"
 #include "CellTypes.h"
 #include "MapGrid.h"
 
-class Unit
+class MYDLL_API Unit
 {
 private:
 	sf::RenderWindow& _window;
@@ -31,3 +33,5 @@ public:
 	void render();
 	bool isActive();
 };
+
+#endif

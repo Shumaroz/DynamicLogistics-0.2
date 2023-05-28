@@ -1,10 +1,14 @@
 #pragma once
 
+#ifndef CELL_H
+#define CELL_H
+#include "MyDLL.h"
+
 #include <SFML/Graphics.hpp>
 #include "framework.h"
 #include "CellTypes.h"
 
-class Cell
+class MYDLL_API Cell
 {
 private:
 	int d_param = 0;
@@ -26,3 +30,5 @@ public:
 
 	void debugParams();
 };
+
+#endif

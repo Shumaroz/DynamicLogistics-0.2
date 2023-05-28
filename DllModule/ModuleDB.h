@@ -1,5 +1,9 @@
 #pragma once
 
+#ifndef MODULEDB_H
+#define MODULEDB_H
+#include "MyDLL.h"
+
 #include <SFML/Graphics.hpp>
 #include "framework.h"
 #include <vector>
@@ -7,7 +11,7 @@
 #include "Unit.h"
 #include "MapGrid.h"
 
-class ModuleDB
+class MYDLL_API ModuleDB
 {
 private:
 	std::vector<Agent*> agentsVec;
@@ -24,3 +28,5 @@ public:
 	void update(float dt);
 	void render();
 };
+
+#endif

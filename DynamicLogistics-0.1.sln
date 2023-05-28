@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.2092
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32901.82
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DynamicLogistics-0.1", "DynamicLogistics-0.1\DynamicLogistics-0.1.vcxproj", "{812B921A-39F4-482D-8F46-6CD729347247}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DllModule", "DllModule\DllModule.vcxproj", "{40989464-EFD5-4319-9666-D75838C2FD88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,14 @@ Global
 		{812B921A-39F4-482D-8F46-6CD729347247}.Release|x64.Build.0 = Release|x64
 		{812B921A-39F4-482D-8F46-6CD729347247}.Release|x86.ActiveCfg = Release|Win32
 		{812B921A-39F4-482D-8F46-6CD729347247}.Release|x86.Build.0 = Release|Win32
+		{40989464-EFD5-4319-9666-D75838C2FD88}.Debug|x64.ActiveCfg = Debug|x64
+		{40989464-EFD5-4319-9666-D75838C2FD88}.Debug|x64.Build.0 = Debug|x64
+		{40989464-EFD5-4319-9666-D75838C2FD88}.Debug|x86.ActiveCfg = Debug|Win32
+		{40989464-EFD5-4319-9666-D75838C2FD88}.Debug|x86.Build.0 = Debug|Win32
+		{40989464-EFD5-4319-9666-D75838C2FD88}.Release|x64.ActiveCfg = Release|x64
+		{40989464-EFD5-4319-9666-D75838C2FD88}.Release|x64.Build.0 = Release|x64
+		{40989464-EFD5-4319-9666-D75838C2FD88}.Release|x86.ActiveCfg = Release|Win32
+		{40989464-EFD5-4319-9666-D75838C2FD88}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

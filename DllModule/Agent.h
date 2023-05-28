@@ -1,13 +1,15 @@
 #pragma once
 
-/*#ifndef AGENT_H
-#define AGENT_H*/
+#ifndef AGENT_H
+#define AGENT_H
+#include "MyDLL.h"
+
 #include <SFML/Graphics.hpp>
 #include "framework.h"
 #include "CellTypes.h"
 #include "MapGrid.h"
 
-class Agent
+class MYDLL_API Agent
 {
 private:
 	sf::RenderWindow& _window;
@@ -33,3 +35,5 @@ public:
 	void render();
 	sf::Vector2f getPos();
 };
+
+#endif

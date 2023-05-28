@@ -4,6 +4,8 @@
 #include <time.h>
 #include "ModuleDB.h"
 
+#define MYDLL_API __declspec(dllimport)
+
 class FPS
 {
 private:
@@ -43,7 +45,7 @@ int main()
 	const int windowSize = 800;
 	int agentCount = 200;
 	sf::RenderWindow window(sf::VideoMode(windowSize, windowSize), "Dynamic Logistics");
-	window.setFramerateLimit(60);
+	window.setFramerateLimit(100);
 	srand(time(NULL));
 	
 	ModuleDB* m_db = new ModuleDB(window);
